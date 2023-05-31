@@ -1,4 +1,5 @@
-﻿using Plugins.DI;
+﻿using System.Collections.Generic;
+using Plugins.DI;
 using UnityEngine;
 
 namespace Asteroids.Partial.Example
@@ -12,8 +13,19 @@ namespace Asteroids.Partial.Example
             var sceneInstaller = new SceneInstaller();
             sceneInstaller.Install(container);
 
-            var service = container.Resolve<IService>();
-            service.SomeMethod();
+            var installers = new List<IInstaller>
+            {
+                new BasicInstaller()
+            };
+            
+            var multiInstaller = new MultiInstaller(installers);
+            multiInstaller.Install(container);
+            
+            // var service = container.Resolve<IService>();
+            // service.SomeMethod();
+            
+            var consumer = container.Resolve<IConsumer>();
+            consumer.DoSomething();
         }
     }
 }

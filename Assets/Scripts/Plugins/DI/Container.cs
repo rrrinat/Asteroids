@@ -8,10 +8,12 @@ namespace Plugins.DI
     public class Container
     {
         private Dictionary<Type, Type> dependencyMap;
+        private Dictionary<Type, object> instancesMap;
 
         public Container()
         {
             dependencyMap = new Dictionary<Type, Type>();
+            instancesMap = new Dictionary<Type, object>();
         }
 
         public void Register<TInterface, TImplementation>()
@@ -19,22 +21,42 @@ namespace Plugins.DI
             dependencyMap[typeof(TInterface)] = typeof(TImplementation);
         }
 
-        public TInterface Resolve<TInterface>()
+        public T Resolve<T>()
         {
-            Type implementationType = dependencyMap[typeof(TInterface)];
-            var instance = CreateInstance(implementationType);
-        
-            return (TInterface)instance;
+            if (dependencyMap.TryGetValue(typeof(T), out var implementationType))
+            {
+                var instance = CreateInstance(implementationType);
+                
+                return (T)instance;
+            }
+            else if (instancesMap.TryGetValue(typeof(T), out var instance))
+            {
+                return (T)instance;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Type {typeof(T).Name} is not registered in the container.");
+            }
         }
         
         private object Resolve(Type type)
         {
-            Type implementationType = dependencyMap[type];
-            var instance = Activator.CreateInstance(implementationType);
-
-            return instance;
+            if (dependencyMap.TryGetValue(type, out var implementationType))
+            {
+                var instance = CreateInstance(implementationType);
+                
+                return instance;
+            }
+            else if (instancesMap.TryGetValue(type, out var instance))
+            {
+                return instance;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Type {type.Name} is not registered in the container.");
+            }
         }
-
+        
         private object CreateInstance(Type type)
         {
             ConstructorInfo constructor = type.GetConstructors().FirstOrDefault();
@@ -59,6 +81,12 @@ namespace Plugins.DI
             }
 
             return Activator.CreateInstance(type);
+        }
+        
+        public void RegisterInstace<T>(object instance)
+        {
+            Type type = typeof(T);
+            instancesMap[type] = instance;
         }
     }
 }
