@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugins.DI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Plugins.GUI.WIndows
 {
@@ -10,23 +12,30 @@ namespace Plugins.GUI.WIndows
         private IWindowsContainer windowsContainer;
         private DIContainer diContainer;
 
-        [Inject]
-        public void Construct(IWindowsContainer windowsContainer)
+        private Dictionary<int, AsyncOperationHandle<GameObject>> handles;
+
+        public WindowsPresenter()
         {
+            handles = new Dictionary<int, AsyncOperationHandle<GameObject>>();
+        }
+        
+        [Inject]
+        public void Construct(DIContainer container, IWindowsContainer windowsContainer)
+        {
+            this.diContainer = container;
             this.windowsContainer = windowsContainer;
         }
         
-        public async Task<T> ShowAsync<T>() where T : WindowBase
+        public async Task<T> CreateAsync<T>() where T : WindowBase
         {
-            var window = await ShowInternal<T>();
+            var window = await CreateInternal<T>();
 
             windowsContainer.Add(window);
-            window.Show();
 
             return window;
         }
         
-        private async Task<T> ShowInternal<T>() where T : WindowBase
+        private async Task<T> CreateInternal<T>() where T : WindowBase
         {
             var type = typeof(T);
             var hashCode = type.GetHashCode();
@@ -36,9 +45,12 @@ namespace Plugins.GUI.WIndows
                 return windowBase as T;
             }
             
-            var handle = Addressables.InstantiateAsync(type.Name);
+            var handle = Addressables.LoadAssetAsync<GameObject>(type.Name);
+            handles.Add(hashCode, handle);
+            
             await handle.Task;
-            var instance = handle.Result;
+
+            var instance = GameObject.Instantiate(handle.Result);
             
             var window = instance.GetComponent<WindowBase>() as T;
 
@@ -49,7 +61,7 @@ namespace Plugins.GUI.WIndows
                 return null;
             }
 
-            //container.InjectGameObject(instance);
+            diContainer.RegisterInstance<T>(window);
 
             return window;
         }       
@@ -57,10 +69,13 @@ namespace Plugins.GUI.WIndows
         public void Close(WindowBase window)
         {
             windowsContainer.Remove(window);
-            
-            if (!Addressables.ReleaseInstance(window.gameObject))
+
+            Object.Destroy(window.gameObject);
+            if (handles.TryGetValue(window.GetType().GetHashCode(), out var handle))
             {
-                GameObject.Destroy(window.gameObject);
+                Addressables.Release(handle);
+                
+                handles.Remove(window.GetType().GetHashCode());
             }
         }
         

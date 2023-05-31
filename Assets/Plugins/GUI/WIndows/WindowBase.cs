@@ -24,8 +24,6 @@ namespace Plugins.GUI.WIndows
         public virtual void Initialize()
         {
             RectTransform = GetComponent<RectTransform>();
-            //RectTransform.localScale = Vector3.zero;
-
             canvasGroup = GetComponent<CanvasGroup>();
         }
         

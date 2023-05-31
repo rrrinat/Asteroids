@@ -9,6 +9,8 @@ namespace Asteroids.Partial.Example
         private IService service;
         private Camera camera;
         private IWindowsPresenter windowsPresenter;
+
+        private ExampleWindow exampleWindow;
         
         [Inject]
         public void Construct(IService service, Camera camera, IWindowsPresenter windowsPresenter)
@@ -30,7 +32,12 @@ namespace Asteroids.Partial.Example
 
         private async void ShowExampleWindow()
         {
-            await windowsPresenter.ShowAsync<ExampleWindow>();
+            exampleWindow = await windowsPresenter.CreateAsync<ExampleWindow>();
+        }
+
+        public void Close()
+        {
+            exampleWindow.Close();
         }
     }
 }

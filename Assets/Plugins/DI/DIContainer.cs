@@ -78,6 +78,7 @@ namespace Plugins.DI
         public void RegisterInstance<T>(object instance)
         {
             Type type = typeof(T);
+            InjectDependencies(instance);
             instancesMap[type] = instance;
         }
     }
