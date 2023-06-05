@@ -1,4 +1,5 @@
-﻿using Plugins.DI;
+﻿using Asteroids.Partial.Gameplay.InputProcessor;
+using Plugins.DI;
 
 namespace Asteroids.Partial.Installers
 {
@@ -9,7 +10,7 @@ namespace Asteroids.Partial.Installers
             // container.Register<IService, Service>();
             // container.Register<IConsumer, Consumer>();
             
-            
+            container.RegisterInstance<DefaultInputController>(new DefaultInputController());
         }
     }
 }

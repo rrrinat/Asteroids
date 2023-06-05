@@ -1,18 +1,17 @@
-﻿using Asteroids.Partial.Gameplay.Configs;
-using Plugins.DI;
+﻿using Plugins.DI;
 using UnityEngine;
 
 namespace Asteroids.Partial.Gameplay.GameStates.States
 {
     public class GameSpawnState : GameState
     {
-        private SpaceshipConfig spaceshipConfig;
-        
-        [Inject]
-        public void Construct(SpaceshipConfig spaceshipConfig)
-        {
-            this.spaceshipConfig = spaceshipConfig;
-        }
+        // private SpaceshipConfig spaceshipConfig;
+        //
+        // [Inject]
+        // public void Construct(SpaceshipConfig spaceshipConfig)
+        // {
+        //     this.spaceshipConfig = spaceshipConfig;
+        // }
         
         public GameSpawnState(GameStateMachine gameStateMachine) : base(gameStateMachine)
         {
@@ -23,7 +22,7 @@ namespace Asteroids.Partial.Gameplay.GameStates.States
             Debug.Log($"GameSpawnState.Enter()");
 
             //var spaceshipConfig = container.Resolve<SpaceshipConfig>();
-            Debug.Log($"SpaceshipConfig ({spaceshipConfig.Speed})");
+            //Debug.Log($"SpaceshipConfig ({spaceshipConfig.MovementSpeed})");
             
         }
 

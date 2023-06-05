@@ -496,6 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spaceshipConfig: {fileID: 11400000, guid: 8e9f5556fbfd68a4aa32a9e737cb506c, type: 2}
+  movementConfig: {fileID: 11400000, guid: 88d06c20f9d2221439d50282763221f7, type: 2}
 --- !u!1 &1764718746
 GameObject:
   m_ObjectHideFlags: 0

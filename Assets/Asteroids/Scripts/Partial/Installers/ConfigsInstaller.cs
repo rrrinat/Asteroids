@@ -1,4 +1,4 @@
-using Asteroids.Partial.Gameplay.Configs;
+using Asteroids.Partial.Gameplay.Steering.Configs;
 using Plugins.DI;
 using UnityEngine;
 
@@ -6,11 +6,11 @@ namespace Asteroids.Partial.Installers
 {
     public class ConfigsInstaller : MonoInstaller
     {
-        [SerializeField] private SpaceshipConfig spaceshipConfig;
+        [SerializeField] private MovementConfig movementConfig;
 
         public override void Install(DIContainer container)
         {
-            container.RegisterInstance<SpaceshipConfig>(spaceshipConfig);
+            container.RegisterInstance<MovementConfig>(movementConfig);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Asteroids.Partial.GameServices
             var installers = new List<IInstaller>
             {
                 new BasicInstaller(),
+                new GameInstaller(),
                 new GUIInstaller(),
                 new GameStateFactoriesInstaller()
             };

@@ -2,7 +2,7 @@ using Plugins.DI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Asteroids.Partial.Example
+namespace Asteroids.Partial.Installers
 {
     public class SceneObjectsInstaller : MonoInstaller
     {
