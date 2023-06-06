@@ -53,6 +53,24 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Forward"",
+                    ""type"": ""Button"",
+                    ""id"": ""d540a8fb-174a-4c14-938a-20cf6358156d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""f3320f09-b8a9-4b72-9842-4b6dd206ef76"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -121,6 +139,50 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52738a23-5b1f-4e93-9524-c917ad873fcf"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""ac0c73d4-daf1-4b7a-8fd7-a5a0a3c091f5"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""0c35bb3a-e779-4349-87f4-492db3f44469"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""61ce7348-4e03-4c70-8567-261adcc4f214"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -132,6 +194,8 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
         m_Spaceship_Movement = m_Spaceship.FindAction("Movement", throwIfNotFound: true);
         m_Spaceship_Shoot = m_Spaceship.FindAction("Shoot", throwIfNotFound: true);
         m_Spaceship_SwitchWeapon = m_Spaceship.FindAction("SwitchWeapon", throwIfNotFound: true);
+        m_Spaceship_Forward = m_Spaceship.FindAction("Forward", throwIfNotFound: true);
+        m_Spaceship_Rotation = m_Spaceship.FindAction("Rotation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -196,6 +260,8 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Spaceship_Movement;
     private readonly InputAction m_Spaceship_Shoot;
     private readonly InputAction m_Spaceship_SwitchWeapon;
+    private readonly InputAction m_Spaceship_Forward;
+    private readonly InputAction m_Spaceship_Rotation;
     public struct SpaceshipActions
     {
         private @DefaultInput m_Wrapper;
@@ -203,6 +269,8 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Spaceship_Movement;
         public InputAction @Shoot => m_Wrapper.m_Spaceship_Shoot;
         public InputAction @SwitchWeapon => m_Wrapper.m_Spaceship_SwitchWeapon;
+        public InputAction @Forward => m_Wrapper.m_Spaceship_Forward;
+        public InputAction @Rotation => m_Wrapper.m_Spaceship_Rotation;
         public InputActionMap Get() { return m_Wrapper.m_Spaceship; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -221,6 +289,12 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
             @SwitchWeapon.started += instance.OnSwitchWeapon;
             @SwitchWeapon.performed += instance.OnSwitchWeapon;
             @SwitchWeapon.canceled += instance.OnSwitchWeapon;
+            @Forward.started += instance.OnForward;
+            @Forward.performed += instance.OnForward;
+            @Forward.canceled += instance.OnForward;
+            @Rotation.started += instance.OnRotation;
+            @Rotation.performed += instance.OnRotation;
+            @Rotation.canceled += instance.OnRotation;
         }
 
         private void UnregisterCallbacks(ISpaceshipActions instance)
@@ -234,6 +308,12 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
             @SwitchWeapon.started -= instance.OnSwitchWeapon;
             @SwitchWeapon.performed -= instance.OnSwitchWeapon;
             @SwitchWeapon.canceled -= instance.OnSwitchWeapon;
+            @Forward.started -= instance.OnForward;
+            @Forward.performed -= instance.OnForward;
+            @Forward.canceled -= instance.OnForward;
+            @Rotation.started -= instance.OnRotation;
+            @Rotation.performed -= instance.OnRotation;
+            @Rotation.canceled -= instance.OnRotation;
         }
 
         public void RemoveCallbacks(ISpaceshipActions instance)
@@ -256,5 +336,7 @@ public partial class @DefaultInput: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
+        void OnForward(InputAction.CallbackContext context);
+        void OnRotation(InputAction.CallbackContext context);
     }
 }

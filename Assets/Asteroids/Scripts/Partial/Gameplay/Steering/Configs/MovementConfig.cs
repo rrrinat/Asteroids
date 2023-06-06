@@ -7,5 +7,11 @@ namespace Asteroids.Partial.Gameplay.Steering.Configs
     {
         public float MovementSpeed;
         public float RotationSpeed;
+        
+        public float RotationAmplification;
+        public float RotationDamping;
+        
+        public float MovementAmplification;
+        public float MovementDamping;
     }
 }

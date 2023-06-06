@@ -6,10 +6,10 @@ namespace Asteroids.Partial.Gameplay.InputProcessor
     {
         public DefaultInputController()
         {
-            var defaultInput = new DefaultInput();
-            defaultInput.Enable();
-            
-            defaultInput.Spaceship.Movement.performed += ctx => Move(ctx.ReadValue<Vector2>());
+            // var defaultInput = new DefaultInput();
+            // defaultInput.Enable();
+            //
+            // defaultInput.Spaceship.Movement.performed += ctx => Move(ctx.ReadValue<Vector2>());
            
         }
         
