@@ -10,8 +10,6 @@ namespace Asteroids.Partial.Gameplay.Steering
         void RotationPerformed(InputAction.CallbackContext context);
         void RotationCanceled(InputAction.CallbackContext context);
         
-        
-        void Rotate(Transform transform);
-        void Move(Transform transform);
+        void Update(Transform transform);
     }
 }

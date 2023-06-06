@@ -29,7 +29,7 @@ namespace Asteroids.Partial.Gameplay.Entities
         {
             var prefab = Resources.Load<GameObject>("Spaceship");
             view = GameObject.Instantiate(prefab).GetComponent<SpaceshipView>();
-            view.Initialize(moveComponent.Rotate, moveComponent.Move);
+            view.SetMove(moveComponent.Update);
         }
     }
 }

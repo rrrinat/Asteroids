@@ -53,15 +53,12 @@ namespace Asteroids.Partial.Gameplay.Steering
         {
             horizontalDirection = 0f;
         }
-
-        public void Rotate(Transform transform)
+        
+        public void Update(Transform transform)
         {
             currentRotationSpeed = Mathf.MoveTowards(currentRotationSpeed, horizontalDirection * movementConfig.RotationSpeed, RotationInertia * Time.deltaTime);
             transform.rotation *= Quaternion.Euler(0f, currentRotationSpeed * Time.deltaTime, 0f);
-        }
-        
-        public void Move(Transform transform)
-        {
+            
             desiredMoveSpeed = verticalDirection * movementConfig.MovementSpeed;
             currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, desiredMoveSpeed, Time.deltaTime * MovementInertia);
             currentMoveVelocity = transform.forward * currentMoveSpeed;
